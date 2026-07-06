@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="https://i.ibb.co/p6LfRWg3/logotipo22221.png">
+<title>Alberto Díaz Almenta · Portfolio Digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0F1420;
+    --bg-soft: #141B2B;
+    --surface: #182036;
+    --surface-2: #1E2740;
+    --text: #EDEBE4;
+    --text-dim: #A8AEBE;
+    --muted: #6D7488;
+    --gold: #C9A227;
+    --gold-soft: #E4C86B;
+    --blue: #4A6FA5;
+    --line: rgba(237,235,228,0.09);
+    --radius: 2px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1,h2,h3, .display{
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  .mono{
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.06em;
+  }
+
+  a{ color: inherit; }
+
+  /* ---------- corner-frame signature element ---------- */
+  .framed{
+    position: relative;
+    border: 1px solid var(--line);
+  }
+  .framed::before,
+  .framed::after,
+  .framed .c-tr,
+  .framed .c-bl{
+    content:"";
+    position:absolute;
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid var(--gold);
+    opacity: 0.85;
+    transition: opacity .3s ease, width .3s ease, height .3s ease;
+  }
+  .framed::before{ top:-1px; left:-1px; border-right:none; border-bottom:none; }
+  .framed::after{ bottom:-1px; right:-1px; border-left:none; border-top:none; }
+  .framed .c-tr{ top:-1px; right:-1px; border-left:none; border-bottom:none; }
+  .framed .c-bl{ bottom:-1px; left:-1px; border-right:none; border-top:none; }
+  .framed:hover::before,
+  .framed:hover::after,
+  .framed:hover .c-tr,
+  .framed:hover .c-bl{ width: 20px; height: 20px; }
+
+  /* ---------- top nav ---------- */
+  header.site{
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 22px 5vw;
+    background: rgba(15,20,32,0.72);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand{
+    font-family:'Fraunces', serif;
+    font-size: 1.05rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+  }
+  .brand span{ color: var(--gold); }
+
+  nav.mainnav{ display:flex; gap: 34px; }
+  nav.mainnav a{
+    text-decoration:none;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-family:'JetBrains Mono', monospace;
+    position: relative;
+    padding-bottom: 4px;
+    cursor:pointer;
+  }
+  nav.mainnav a::after{
+    content:"";
+    position:absolute;
+    left:0; bottom:0;
+    width:0%;
+    height:1px;
+    background: var(--gold);
+    transition: width .25s ease;
+  }
+  nav.mainnav a:hover{ color: var(--text); }
+  nav.mainnav a:hover::after{ width:100%; }
+  nav.mainnav a.active{ color: var(--gold-soft); }
+  nav.mainnav a.active::after{ width:100%; }
+
+  .navtoggle{ display:none; background:none; border:none; color:var(--text); font-size:1.4rem; cursor:pointer; }
+
+  /* ---------- flechas de navegación entre páginas ---------- */
+  .page-arrows{
+    position: fixed;
+    top: 90px;
+    right: 5vw;
+    display: none;
+    gap: 10px;
+    z-index: 40;
+  }
+  .page-arrows.show{ display:flex; }
+  .arrow-btn{
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--line);
+    background: rgba(15,20,32,0.6);
+    backdrop-filter: blur(6px);
+    color: var(--text-dim);
+    font-size: 1rem;
+    cursor: pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition: all .25s ease;
+  }
+  .arrow-btn:hover{ border-color: var(--gold); color: var(--gold-soft); }
+  .arrow-btn.disabled{ opacity: 0.25; pointer-events: none; }
+
+  /* ---------- views ---------- */
+  .view{ display:none; }
+  .view.active{ display:block; animation: fadeUp .5s ease; }
+  @keyframes fadeUp{
+    from{ opacity:0; transform: translateY(10px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  main{ min-height: calc(100vh - 200px); }
+
+  /* ---------- hero (home) ---------- */
+  .hero{
+    position: relative;
+    display:grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items:center;
+    gap: 60px;
+    padding: 9vh 5vw 8vh;
+    min-height: 82vh;
+    overflow:hidden;
+  }
+  #particle-canvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:0;
+    opacity: 0.55;
+  }
+  .hero-left, .hero-right{ position:relative; z-index:1; }
+
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap: 10px;
+    font-size: 0.75rem;
+    color: var(--gold-soft);
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .eyebrow::before{
+    content:"";
+    width: 26px; height:1px;
+    background: var(--gold);
+  }
+
+  .hero-left h1{
+    font-size: clamp(2.6rem, 5.2vw, 4.4rem);
+    line-height: 1.03;
+    color: var(--text);
+  }
+  .hero-left h1 em{
+    font-style: italic;
+    color: var(--gold-soft);
+    font-weight: 400;
+  }
+
+  .hero-desc{
+    margin-top: 24px;
+    max-width: 460px;
+    color: var(--text-dim);
+    font-size: 1.02rem;
+    line-height: 1.7;
+  }
+
+  .hero-cta{ display:flex; gap:16px; margin-top: 38px; flex-wrap: wrap; }
+  .btn{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 14px 26px;
+    border-radius: var(--radius);
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-block;
+    transition: all .25s ease;
+    border: 1px solid transparent;
+  }
+  .btn-primary{ background: var(--gold); color: #14181f; }
+  .btn-primary:hover{ background: var(--gold-soft); }
+  .btn-ghost{ border-color: var(--line); color: var(--text); }
+  .btn-ghost:hover{ border-color: var(--gold); color: var(--gold-soft); }
+
+  /* rolling image gallery */
+  .roll-frame{
+    position:relative;
+    width: 100%;
+    aspect-ratio: 4/5;
+    max-width: 420px;
+    margin-left: auto;
+    background: var(--surface);
+    overflow:hidden;
+  }
+  .roll-slide{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    flex-direction:column;
+    gap: 10px;
+    opacity:0;
+    transition: opacity 1.1s ease;
+    background: linear-gradient(150deg, var(--surface-2), var(--bg-soft));
+  }
+  .roll-slide.show{ opacity:1; }
+  .roll-slide img{ width:100%; height:100%; object-fit:contain; }
+  .roll-placeholder-icon{ font-size: 2.2rem; opacity:0.35; }
+  .roll-placeholder-text{ font-family:'JetBrains Mono',monospace; font-size:0.72rem; color: var(--muted); text-transform:uppercase; letter-spacing:0.08em; }
+
+  /* ---------- category cards ---------- */
+  .categories{
+    padding: 4vh 5vw 10vh;
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+  }
+  .cat-card{
+    position:relative;
+    padding: 34px 28px;
+    background: var(--surface);
+    cursor:pointer;
+    transition: transform .3s ease, background .3s ease;
+  }
+  .cat-card:hover{ transform: translateY(-6px); background: var(--surface-2); }
+  .cat-num{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--gold);
+    margin-bottom: 22px;
+    display:block;
+  }
+  .cat-card h3{
+    font-size: 1.35rem;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+  .cat-card p{
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0 0 24px;
+  }
+  .cat-arrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--gold-soft);
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .cat-card:hover .cat-arrow{ gap: 14px; }
+  .cat-arrow{ transition: gap .25s ease; }
+
+  /* ---------- generic section (subpages) ---------- */
+  .section-head{
+    padding: 8vh 5vw 3vh;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-head .eyebrow{ margin-bottom: 18px; }
+  .section-head h2{
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+  .section-head p{
+    color: var(--text-dim);
+    max-width: 560px;
+    margin-top: 16px;
+    line-height: 1.7;
+  }
+
+  .section-body{ padding: 6vh 5vw 10vh; }
+
+  /* trabajos: bloques de categoría */
+  .work-categories{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 26px;
+    max-width: 980px;
+    margin: 56px auto 0;
+  }
+
+  /* trabajos: galería de una categoría */
+  .work-gallery{ display:none; margin-top: 20px; }
+  .work-gallery.open{ display:block; animation: fadeUp .4s ease; }
+  .back-btn{
+    background:none;
+    border: 1px solid var(--line);
+    color: var(--text-dim);
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 11px 20px;
+    cursor:pointer;
+    margin-bottom: 40px;
+    transition: all .25s ease;
+  }
+  .back-btn:hover{ border-color: var(--gold); color: var(--gold-soft); }
+  .gallery-title{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    text-align:center;
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    margin: 0 0 14px;
+  }
+  .gallery-desc{
+    text-align:center;
+    color: var(--text-dim);
+    max-width: 640px;
+    margin: 0 auto 50px;
+    line-height: 1.75;
+  }
+  .gallery-container{ display:flex; flex-direction:column; gap: 56px; }
+  .gallery-group-title{
+    font-family:'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+    text-align:center;
+    color: var(--text);
+    margin: 0 auto 30px;
+    max-width: 720px;
+    position: relative;
+    padding-bottom: 18px;
+  }
+  .gallery-group-title::after{
+    content:"";
+    display:block;
+    width: 40px; height:2px;
+    background: var(--gold);
+    margin: 16px auto 0;
+    position:absolute;
+    left:50%; bottom:0;
+    transform: translateX(-50%);
+  }
+  .gallery-subgroups{ display:flex; flex-direction:column; gap: 44px; margin-top: 8px; }
+  .gallery-note{ cursor: default; }
+  .gallery-note:hover{ transform:none; }
+  .gallery-note .gallery-placeholder{ background: transparent; border: 1px dashed var(--line); }
+  .gallery-note .roll-placeholder-text{ color: var(--text-dim); max-width: 80%; }
+  .gallery-year{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    text-align:center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+    max-width: 200px;
+    margin: 0 auto 4px;
+  }
+  .gallery-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  .gallery-item{
+    aspect-ratio: 1 / 1;
+    background: var(--surface);
+    cursor: pointer;
+    overflow:hidden;
+    position:relative;
+  }
+  .gallery-item img{ width:100%; height:100%; object-fit:cover; display:block; transition: transform .45s ease; }
+  .gallery-item:hover img{ transform: scale(1.06); }
+  .gallery-placeholder{
+    width:100%; height:100%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap: 8px;
+    background: linear-gradient(150deg, var(--surface-2), var(--bg-soft));
+  }
+  .gallery-caption{
+    position:absolute; left:0; right:0; bottom:0;
+    padding: 10px 12px;
+    font-size: 0.76rem;
+    line-height:1.4;
+    color: var(--text);
+    background: linear-gradient(to top, rgba(10,13,20,0.88), rgba(10,13,20,0));
+    opacity:0;
+    transform: translateY(6px);
+    transition: opacity .3s ease, transform .3s ease;
+  }
+  .gallery-item:hover .gallery-caption{ opacity:1; transform: translateY(0); }
+  .gallery-play{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size: 1.4rem;
+    color: var(--text);
+    background: rgba(10,13,20,0.28);
+    transition: background .3s ease;
+  }
+  .gallery-item:hover .gallery-play{ background: rgba(10,13,20,0.1); }
+  .gallery-boletin .gallery-placeholder{ background: linear-gradient(150deg, var(--surface-2), var(--bg-soft)); }
+
+  /* lightbox */
+  .lightbox{
+    position:fixed; inset:0;
+    background: rgba(10,13,20,0.94);
+    display:none;
+    align-items:center; justify-content:center;
+    z-index: 300;
+    padding: 40px;
+    cursor: zoom-out;
+  }
+  .lightbox.open{ display:flex; }
+  .lightbox-content{ max-width:90vw; max-height:85vh; }
+  .lightbox-content img{ max-width:90vw; max-height:85vh; object-fit:contain; display:block; }
+  .lightbox-content iframe{ width:80vw; height:70vh; max-width:1100px; border:none; background:#000; }
+  .lightbox-fallback{
+    background: var(--surface);
+    padding: 40px 44px;
+    text-align:center;
+    max-width: 420px;
+  }
+  .lightbox-fallback p{ color: var(--text-dim); margin: 0 0 22px; line-height:1.6; }
+  .lightbox-close{
+    position:absolute; top:26px; right:34px;
+    font-size:1.6rem; color: var(--text);
+    cursor:pointer;
+    z-index: 320;
+  }
+  .lightbox-nav{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--line);
+    background: rgba(15,20,32,0.55);
+    backdrop-filter: blur(6px);
+    color: var(--text);
+    font-size: 1.8rem;
+    line-height:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor: pointer;
+    transition: all .25s ease;
+    z-index: 310;
+  }
+  .lightbox-nav:hover{ border-color: var(--gold); color: var(--gold-soft); }
+  .lightbox-nav.hidden{ display:none; }
+  .lightbox-prev{ left: 24px; }
+  .lightbox-next{ right: 24px; }
+
+  /* experiencia: título grande centrado */
+  .section-title-big{
+    font-family:'Fraunces', serif;
+    font-weight: 500;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+    color: var(--text);
+    margin: 0 0 8px;
+    position: relative;
+  }
+  .section-title-big::after{
+    content:"";
+    display:block;
+    width: 46px;
+    height: 2px;
+    background: var(--gold);
+    margin: 20px auto 0;
+  }
+
+  /* experiencia: timeline centrada alternada */
+  .timeline-v2{
+    position: relative;
+    max-width: 980px;
+    margin: 60px auto 0;
+  }
+  .timeline-v2::before{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:0;
+    bottom:0;
+    width:1px;
+    background: var(--line);
+    transform: translateX(-50%);
+  }
+  .tl-row{
+    position: relative;
+    display:flex;
+    align-items: flex-start;
+    gap: 48px;
+    margin-bottom: 60px;
+  }
+  .tl-row:last-child{ margin-bottom:0; }
+  .tl-row .tl-spacer{ flex:1; }
+  .tl-row .tl-card{
+    flex:1;
+    background: var(--surface);
+    padding: 26px 28px;
+    position: relative;
+  }
+  .tl-row::before{
+    content:"";
+    position:absolute;
+    left:50%;
+    top: 30px;
+    width:11px; height:11px;
+    border-radius:50%;
+    background: var(--bg);
+    border: 2px solid var(--gold);
+    transform: translateX(-50%);
+    z-index:1;
+  }
+  .tl-date{ font-family:'JetBrains Mono', monospace; font-size:0.75rem; color: var(--gold-soft); margin-bottom:8px; display:block; }
+  .tl-card h3{ font-size: 1.1rem; margin-bottom:6px; }
+  .tl-role{ color: var(--text-dim); font-size:0.84rem; margin-bottom:14px; }
+  .tl-card ul{ margin:0; padding-left: 18px; }
+  .tl-card ul li{ color: var(--text-dim); font-size:0.88rem; line-height:1.65; margin-bottom:10px; }
+  .tl-card ul li:last-child{ margin-bottom:0; }
+  .tl-card ul li::marker{ color: var(--gold); }
+
+  .exp-block{ margin-bottom: 100px; }
+  .exp-block:last-child{ margin-bottom:0; }
+
+  .section-desc-centered{
+    text-align:center;
+    color: var(--text-dim);
+    max-width: 680px;
+    margin: 18px auto 0;
+    line-height: 1.75;
+  }
+
+  .cv-download{ text-align:center; margin-top: 60px; }
+  .cv-link{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gold-soft);
+    text-decoration:none;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 5px;
+    transition: opacity .25s ease;
+  }
+  .cv-link:hover{ opacity: 0.65; }
+
+  /* certificaciones: cuadrados clicables */
+  .cert-squares{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    max-width: 980px;
+    margin: 60px auto 0;
+  }
+  .cert-square{
+    aspect-ratio: 1 / 1;
+    background: var(--surface);
+    text-decoration:none;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    gap: 12px;
+    padding: 22px 18px;
+    position: relative;
+    transition: transform .3s ease, background .3s ease;
+  }
+  .cert-square:hover{ transform: translateY(-6px); background: var(--surface-2); }
+  .cert-icon{
+    width: 34px; height:34px;
+    border-radius:50%;
+    border: 1.5px solid var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    color: var(--gold-soft);
+    font-size: 1rem;
+    margin-bottom: 4px;
+  }
+  .cert-text{ display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .cert-square h4{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size: 0.98rem;
+    color: var(--text);
+    margin:0;
+    line-height:1.4;
+  }
+  .cert-square .cert-org{ color: var(--text-dim); font-size:0.8rem; }
+  .cert-square .cert-year{ font-family:'JetBrains Mono', monospace; font-size:0.72rem; color: var(--gold-soft); }
+  .cert-square .cert-link{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .cert-square:hover .cert-link{ color: var(--gold-soft); }
+
+  /* contacto */
+  .contact-wrap{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    max-width: 980px;
+    margin: 60px auto 0;
+  }
+  .contact-list{ display:flex; flex-direction:column; gap: 22px; }
+  .contact-item{
+    display:flex; flex-direction:column; gap:6px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .contact-item .label{ font-family:'JetBrains Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); }
+  .contact-item a, .contact-item .value{ font-size:1.05rem; text-decoration:none; color:var(--text); }
+  .contact-item a:hover{ color: var(--gold-soft); }
+
+  .contact-form{ display:flex; flex-direction:column; gap: 18px; }
+  .contact-form label{ font-family:'JetBrains Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em; color: var(--muted); margin-bottom:8px; display:block; }
+  .contact-form input, .contact-form textarea{
+    width:100%;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 13px 14px;
+    font-family:'Manrope', sans-serif;
+    font-size:0.92rem;
+    border-radius: var(--radius);
+  }
+  .contact-form input:focus, .contact-form textarea:focus{
+    outline:none; border-color: var(--gold);
+  }
+  .contact-form textarea{ resize: vertical; min-height:120px; }
+  .cf-status{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    margin: 4px 0 0;
+    min-height: 1.2em;
+  }
+  .cf-status.sending{ color: var(--text-dim); }
+  .cf-status.success{ color: #8FBF8F; }
+  .cf-status.error{ color: #D98080; }
+
+  /* ---------- footer ---------- */
+  footer.site{
+    padding: 26px 5vw;
+    border-top: 1px solid var(--line);
+    text-align:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.76rem;
+    color: var(--muted);
+  }
+  footer.site a{ color: var(--text-dim); text-decoration:none; }
+  footer.site a:hover{ color: var(--gold-soft); }
+  .footer-logo{
+    display:block;
+    max-width: 120px;
+    height:auto;
+    margin: 0 auto 16px;
+    opacity: 0.9;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 900px){
+    .hero{ grid-template-columns: 1fr; padding-top: 6vh; min-height:auto; }
+    .roll-frame{ margin-left:0; max-width: 100%; }
+    .categories{ grid-template-columns: 1fr; }
+    .work-categories{ grid-template-columns: 1fr; }
+    .contact-wrap{ grid-template-columns: 1fr; }
+    .cert-grid{ grid-template-columns: 1fr; }
+    .cert-squares{ grid-template-columns: 1fr; gap: 16px; }
+    .cert-square{
+      aspect-ratio: auto;
+      flex-direction: row;
+      text-align: left;
+      justify-content: flex-start;
+      padding: 20px 22px;
+      gap: 18px;
+    }
+    .cert-square .cert-icon{ margin-bottom:0; flex-shrink:0; }
+    .cert-text{ align-items:flex-start; }
+    .gallery-grid{ grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap:14px; }
+    .timeline-v2::before{ left: 18px; }
+    .tl-row{ gap:0; margin-bottom: 44px; }
+    .tl-row::before{ left: 18px; top: 6px; }
+    .tl-row .tl-spacer{ display:none; }
+    .tl-row .tl-card{ flex: 1 1 auto; margin-left: 40px; width: calc(100% - 40px); padding: 20px 20px; }
+    header.site{ padding: 16px 5vw; }
+    .brand{ font-size: 0.95rem; }
+    .page-arrows{ top: 74px; }
+    nav.mainnav{
+      position:absolute; top:100%; left:0; right:0;
+      background: var(--bg-soft);
+      flex-direction:column;
+      padding: 20px 5vw;
+      gap: 18px;
+      border-bottom: 1px solid var(--line);
+      display:none;
+    }
+    nav.mainnav.open{ display:flex; }
+    .navtoggle{ display:block; }
+  }
+
+  @media (max-width: 560px){
+    .hero{ padding: 5vh 6vw 6vh; }
+    .hero-cta{ flex-direction:column; align-items:stretch; }
+    .hero-cta .btn{ text-align:center; }
+    .categories, .work-categories{ gap: 18px; }
+    .cat-card{ padding: 26px 22px; }
+    .section-body{ padding: 5vh 6vw 8vh; }
+    .cert-square{ padding: 16px 16px; gap: 14px; }
+    .cert-square h4{ font-size: 0.88rem; }
+    .gallery-grid{ grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+    .gallery-group-title{ font-size: 1.1rem; margin-bottom: 22px; }
+    .work-gallery{ margin-top: 10px; }
+    .back-btn{ margin-bottom: 28px; width: 100%; }
+    .lightbox{ padding: 16px; }
+    .lightbox-content img{ max-width: 94vw; max-height: 80vh; }
+    .lightbox-content iframe{ width: 92vw; height: 46vw; max-height: 60vh; }
+    .lightbox-close{ top: 14px; right: 18px; }
+    .lightbox-nav{ width: 40px; height: 40px; font-size: 1.4rem; }
+    .lightbox-prev{ left: 8px; }
+    .lightbox-next{ right: 8px; }
+    .roll-placeholder-icon{ font-size: 1.5rem; }
+    .roll-placeholder-text{ font-size: 0.62rem; }
+    .contact-form input, .contact-form textarea{ font-size: 16px; }
+    footer.site{ padding: 20px 6vw; font-size: 0.7rem; line-height:1.6; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .view.active{ animation:none; }
+    .roll-slide{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="brand" onclick="goTo('inicio')">Alberto Díaz <span>Almenta</span></div>
+  <button class="navtoggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  <nav class="mainnav" id="mainNav">
+    <a data-view="inicio" onclick="goTo('inicio')">Inicio</a>
+    <a data-view="experiencia" onclick="goTo('experiencia')">Experiencia y certificaciones</a>
+    <a data-view="trabajos" onclick="goTo('trabajos')">Trabajos realizados</a>
+    <a data-view="contacto" onclick="goTo('contacto')">Contacto</a>
+  </nav>
+</header>
+
+<div class="page-arrows" id="pageArrows">
+  <button class="arrow-btn" id="arrowPrev" aria-label="Página anterior">←</button>
+  <button class="arrow-btn" id="arrowNext" aria-label="Página siguiente">→</button>
+</div>
+
+<main>
+
+  <!-- ===================== INICIO ===================== -->
+  <section class="view active" id="view-inicio">
+    <div class="hero">
+      <canvas id="particle-canvas"></canvas>
+
+      <div class="hero-left">
+        <h1>Alberto Díaz<br><em>Almenta</em></h1>
+        <p class="hero-desc">
+          Especializado en soporte informático, recuperación de datos, gestión de
+          redes sociales, diseño gráfico, dibujo retratista y diseño proyectista.
+          Desarrollo proyectos que combinan conocimientos técnicos y creatividad
+          para ofrecer soluciones funcionales, desde la administración de sistemas
+          y la resolución de incidencias hasta la creación de identidades
+          visuales, producción audiovisual, desarrollo de contenido digital y
+          gestión de marca.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" onclick="goTo('experiencia')">Ver experiencia</a>
+          <a class="btn btn-ghost" onclick="goTo('trabajos')">Ver trabajos</a>
+          <a class="btn btn-ghost" onclick="goTo('contacto')">Contactar</a>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="roll-frame framed" id="rollFrame">
+          <span class="c-tr"></span><span class="c-bl"></span>
+          <!-- slides generados por JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== EXPERIENCIA ===================== -->
+  <section class="view" id="view-experiencia">
+    <div class="section-body" style="padding-top:9vh;">
+      <div class="exp-block">
+        <h2 class="section-title-big">Experiencia profesional</h2>
+        <div class="timeline-v2" id="timelineList"></div>
+      </div>
+      <div class="exp-block">
+        <h2 class="section-title-big">Certificaciones</h2>
+        <div class="cert-squares" id="certGrid"></div>
+        <div class="cv-download">
+          <a class="cv-link" href="https://drive.google.com/file/d/1MZ94phOMxt17qXymvgwAyXrNS8KG2wbv/view?usp=drive_link" target="_blank" rel="noopener">Descargar CV</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TRABAJOS ===================== -->
+  <section class="view" id="view-trabajos">
+    <div class="section-body" style="padding-top:9vh;">
+      <h2 class="section-title-big">Trabajos realizados</h2>
+      <p class="section-desc-centered">En este apartado podréis ver los trabajos que he realizado para diferentes compañías a lo largo de mi experiencia profesional, también encontraréis mis retratos y diseños realizados para hermandades y compañías.</p>
+
+      <div class="work-categories" id="workCategories"></div>
+
+      <div class="work-gallery" id="workGallery">
+        <button class="back-btn" onclick="closeGallery()">← Volver a trabajos realizados</button>
+        <h3 class="gallery-title" id="galleryTitle"></h3>
+        <p class="gallery-desc" id="galleryDesc"></p>
+        <div class="gallery-container" id="galleryGrid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTACTO ===================== -->
+  <section class="view" id="view-contacto">
+    <div class="section-body" style="padding-top:9vh;">
+      <h2 class="section-title-big">Contacto</h2>
+
+      <div class="contact-wrap">
+        <div class="contact-list">
+          <div class="contact-item">
+            <span class="label">Email</span>
+            <a href="mailto:albertodiazalmenta@gmail.com">albertodiazalmenta@gmail.com</a>
+          </div>
+          <div class="contact-item">
+            <span class="label">Instagram</span>
+            <a href="https://www.instagram.com/alberto_dc20/" target="_blank" rel="noopener">instagram.com/alberto_dc20</a>
+          </div>
+          <div class="contact-item">
+            <span class="label">LinkedIn</span>
+            <a href="https://www.linkedin.com/in/alberto-d%C3%ADaz-almenta-a3b50514b/" target="_blank" rel="noopener">linkedin.com/in/alberto-díaz-almenta</a>
+          </div>
+          <div class="contact-item">
+            <span class="label">Teléfono</span>
+            <a href="tel:+34722538849">+34 722 53 88 49</a>
+          </div>
+          <div class="contact-item">
+            <span class="label">Ubicación</span>
+            <span class="value">Bollullos Par del Condado, Huelva, España</span>
+          </div>
+        </div>
+
+        <form class="contact-form" onsubmit="return false;">
+          <div>
+            <label for="cf-name">Nombre y apellidos</label>
+            <input id="cf-name" type="text" placeholder="Tu nombre y apellidos">
+          </div>
+          <div>
+            <label for="cf-email">Email</label>
+            <input id="cf-email" type="email" placeholder="tu@email.com">
+          </div>
+          <div>
+            <label for="cf-phone">Teléfono de contacto</label>
+            <input id="cf-phone" type="tel" placeholder="+34 600 000 000">
+          </div>
+          <div>
+            <label for="cf-msg">Mensaje</label>
+            <textarea id="cf-msg" placeholder="Cuéntame en qué puedo ayudarte..."></textarea>
+          </div>
+          <a class="btn btn-primary" id="cf-submit" style="text-align:center" onclick="sendMail()">Enviar mensaje</a>
+          <p class="cf-status" id="cf-status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <span class="lightbox-close">✕</span>
+  <button class="lightbox-nav lightbox-prev" id="lightboxPrevBtn" aria-label="Imagen anterior">‹</button>
+  <div class="lightbox-content" id="lightboxContent"></div>
+  <button class="lightbox-nav lightbox-next" id="lightboxNextBtn" aria-label="Imagen siguiente">›</button>
+</div>
+
+<footer class="site">
+  <img src="https://i.ibb.co/tpGgD4fV/marca1.png" alt="Alberto Díaz Almenta" class="footer-logo">
+  © 2026 · Creado por <a href="https://www.linkedin.com/in/alberto-d%C3%ADaz-almenta-a3b50514b/" target="_blank" rel="noopener">Alberto Díaz Almenta</a> · Todos los derechos reservados
+</footer>
+
+<script>
+/* ============ ROUTING ============ */
+function goTo(view){
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const target = document.getElementById('view-' + view);
+  if(target) target.classList.add('active');
+
+  if(view !== 'trabajos' && typeof closeGallery === 'function'){
+    closeGallery();
+  }
+
+  document.querySelectorAll('nav.mainnav a').forEach(a => a.classList.remove('active'));
+  const navLink = document.querySelector('nav.mainnav a[data-view="'+view+'"]');
+  if(navLink) navLink.classList.add('active');
+
+  updatePageArrows(view);
+
+  window.location.hash = view;
+  window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+
+  document.getElementById('mainNav').classList.remove('open');
+}
+
+/* ---------- flechas de navegación entre páginas ---------- */
+const pageOrder = ['inicio', 'experiencia', 'trabajos', 'contacto'];
+const pageArrowsEl = document.getElementById('pageArrows');
+const arrowPrevEl = document.getElementById('arrowPrev');
+const arrowNextEl = document.getElementById('arrowNext');
+
+function updatePageArrows(view){
+  pageArrowsEl.classList.add('show');
+
+  const idx = pageOrder.indexOf(view);
+  const prevView = idx > 0 ? pageOrder[idx - 1] : null;
+  const nextView = idx < pageOrder.length - 1 ? pageOrder[idx + 1] : null;
+
+  if(prevView){
+    arrowPrevEl.classList.remove('disabled');
+    arrowPrevEl.onclick = () => goTo(prevView);
+  } else {
+    arrowPrevEl.classList.add('disabled');
+    arrowPrevEl.onclick = null;
+  }
+
+  if(nextView){
+    arrowNextEl.classList.remove('disabled');
+    arrowNextEl.onclick = () => goTo(nextView);
+  } else {
+    arrowNextEl.classList.add('disabled');
+    arrowNextEl.onclick = null;
+  }
+}
+
+function initRoute(){
+  const hash = window.location.hash.replace('#','') || 'inicio';
+  goTo(hash);
+}
+window.addEventListener('hashchange', initRoute);
+document.getElementById('navToggle').addEventListener('click', () => {
+  document.getElementById('mainNav').classList.toggle('open');
+});
+
+/* ============ ROLLING IMAGES ============ */
+const rollFrame = document.getElementById('rollFrame');
+const rollImages = [
+  'https://lh3.googleusercontent.com/d/1VKZil9w5N9Y9_1ebwjUmsO-Nw2PdtRWP=w1800?authuser=0',
+  'https://lh3.googleusercontent.com/d/1EC7Gym_QB6A74lM4w9t5AJQKQOUDARbl=w1800?authuser=0',
+  'https://lh3.googleusercontent.com/d/1y3RCk72OpNHz9F721EG7RdoN-Fmp9_Pf=w1800?authuser=0',
+  'https://lh3.googleusercontent.com/d/1-Ccsg2oO_Tsg0LnI0Sbb9enfh_D2C3Rj=w1800?authuser=0',
+  'https://lh3.googleusercontent.com/d/1LgwoPQDVhi4hnahjVS1v-PHs1uBTOJtd=w1800?authuser=0'
+];
+const totalSlides = rollImages.length;
+let currentSlide = 0;
+
+rollImages.forEach((src, i) => {
+  const slide = document.createElement('div');
+  slide.className = 'roll-slide' + (i === 0 ? ' show' : '');
+  slide.innerHTML = `<img src="${src}" alt="Imagen destacada ${i+1}" loading="${i === 0 ? 'eager' : 'lazy'}">`;
+  rollFrame.appendChild(slide);
+});
+const slides = rollFrame.querySelectorAll('.roll-slide');
+
+function rotateSlides(){
+  slides[currentSlide].classList.remove('show');
+  currentSlide = (currentSlide + 1) % totalSlides;
+  slides[currentSlide].classList.add('show');
+}
+setInterval(rotateSlides, 3600);
+
+/* ============ PARTICLES ============ */
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+let heroEl = canvas.parentElement;
+
+function resizeCanvas(){
+  canvas.width = heroEl.clientWidth;
+  canvas.height = heroEl.clientHeight;
+}
+function initParticles(){
+  const count = Math.max(30, Math.floor((canvas.width * canvas.height) / 22000));
+  particles = Array.from({length: count}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - 0.5) * 0.25,
+    vy: (Math.random() - 0.5) * 0.25,
+    r: Math.random() * 1.6 + 0.6
+  }));
+}
+function drawParticles(){
+  ctx.clearRect(0,0,canvas.width, canvas.height);
+  const maxDist = 140;
+
+  for(let i=0; i<particles.length; i++){
+    const p = particles[i];
+    p.x += p.vx; p.y += p.vy;
+    if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+    if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(201,162,39,0.55)';
+    ctx.fill();
+
+    for(let j=i+1; j<particles.length; j++){
+      const q = particles[j];
+      const dx = p.x - q.x, dy = p.y - q.y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if(dist < maxDist){
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(q.x, q.y);
+        ctx.strokeStyle = `rgba(74,111,165,${0.18 * (1 - dist/maxDist)})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawParticles);
+}
+
+function setupParticles(){
+  resizeCanvas();
+  initParticles();
+}
+window.addEventListener('resize', setupParticles);
+setupParticles();
+
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!prefersReducedMotion){
+  requestAnimationFrame(drawParticles);
+}
+
+/* ============ TRABAJOS: categorías y galería ============ */
+
+/* --- utilidades para incrustar contenido de Google Drive sin enlazar fuera --- */
+function driveThumb(id, size){ return `https://drive.google.com/thumbnail?id=${id}&sz=w${size || 900}`; }
+function driveFull(id){ return `https://drive.google.com/uc?export=view&id=${id}`; }
+function drivePreview(id){ return `https://drive.google.com/file/d/${id}/preview`; }
+
+/* helpers para construir items rápidamente */
+function img(title, id, opts){ return Object.assign({ type:'image', title, id }, opts || {}); }
+function vid(title, id){ return { type:'video', title, id }; }
+function bol(title, url){ return { type:'boletin', title, url }; }
+function lnk(title, url){ return { type:'link', title, url }; }
+function note(title){ return { type:'note', title }; }
+function imgsNoCaption(title, ids){ return ids.map(id => img(title, id, { caption:false })); }
+
+const trabajosData = [
+  {
+    id: 'dibujos',
+    title: 'Dibujos, retratos, diseños y trabajos a mano',
+    desc: 'Dibujos realizados a mano a base de lápices de diferentes gramajes, carboncillo y grafito, diseños para hermandades como orlas de cultos, o diseños de insignias y trabajos realizados en cerámica o talla en madera.',
+    groups: [
+      {
+        label: 'Dibujos, retratos',
+        items: imgsNoCaption('Dibujo, retrato', [
+          '1VKZil9w5N9Y9_1ebwjUmsO-Nw2PdtRWP',
+          '1E0V57px4dwH8BcjRIkoNHDjEN_VNmYkI',
+          '1psXxnfln_oeVhWNk6IP2YXrbclvHGmVu',
+          '1-TTvdhYGNGUkENCdF7NEidOxwxKoY19g',
+          '1Z5qUvqbr0frdDFdxXukET2P9W3jY-o2d',
+          '1yChzMcF3kLb48-5gZfYrzLxZGO4z9ml0',
+          '119bKItulNy1HfkrpGdDUMOx-zb7si3p5',
+          '10fe7yfP6i7shL-srohA5nt5Raa4jBKgZ',
+          '1qaosZ_5VORhJJC2575_fSC-oGvLzsThy',
+          '1ZUT-iObrFiTnG4xGcC5cwzfcHBKON3oE',
+          '1_4DnzEfo09rBgo-55DHFofqq262NlD9y',
+          '1ZOKY_PlLRXN5tieG-g401dror1Ha-Sbv',
+          '15J8I664-fqMEQSmV2rR8vv5ZyT6ZkvAt',
+          '1rfszkl3jBXj7iuWg62txaBqskzaxPmB3',
+          '1jno6s2hsYNAVnSaaUDWLfFitL1XcVSsr',
+          '1BLLOYYVmdgs-jCIXEcKnztfz4VuUdJLL',
+          '1_HExhDJiZyQQkZbBddsa9h_P-ZYmhfqk',
+          '1A5l8RnNE6CWQCd_DQElpqFw4RNtmlZmk',
+          '1tD1GBRay8APhGuFitLw3dWYAQ03pJtqI',
+          '1V4qvJD4FbUxw1cH1g__OL3ETETl_NDaj',
+          '1-Ccsg2oO_Tsg0LnI0Sbb9enfh_D2C3Rj',
+          '15kxZrXkTF4Z0SyyzZYnYWo3gqeX34NlD',
+          '1l3Alq6mjI5hpV9WojNJ4YBFWKT5FtlI4',
+          '1o605VtBbGayGPyJz2ofHav2roxofT379',
+          '1vGGGMkQtHzVlXs-n8AH4p0Zxc45g9F8-',
+          '1eLjcYhYT16t2eAjRffxnXaDrdidbIvjW',
+          '1ytlkcRmt0CQxJmsJJM7a-eXjQeqUGk6p',
+          '1FdMsByPRVMGmUu68Ul8c1mxxG9x-xSPP',
+          '140OvIeIqRpWkmbFKTtZ_gShwxEC3uenV',
+          '1JaA_a7IqwlAb7dxkXkhWNfEq06MqCBoY',
+          '1e5V-sCCxy6xSgpKrRbYM04mKix8_wL9B',
+          '1_dT_MpfmIXYKQ1ypRffPG6zKiTpIXNjn'
+        ])
+      },
+      {
+        label: 'Diseños',
+        items: [
+          img('Orla para Ntra. Señora de las Alegrías — Hermandad del Santo Entierro Bollullos Par Del Condado', '1ifAddblHrI0H6G4yXHZxz5lhCRvTDqLw'),
+          img('Recuerdo Santa Misión 2024 — Hermandad del Santo Entierro a la Hermandad de la Santa Cruz de la Calle Santa Ana', '1cZGyAFreFaMca2u0wolL6o7z6BMt1UHi'),
+          img('Agradecimiento a M. Isabel — Hermandad del Santo Entierro Bollullos Par Del Condado', '18fU6CSIlCLm_On0y10X8KT6lYVHZmxTd'),
+          img('Papeleta de Sitio 2025 — Hermandad del Santo Entierro Bollullos Par Del Condado', '1ABWfS8HvuwkKt0rxskqkU2CvPr1ToDAV'),
+          img('Orla para la Santa Cruz de la Calle Santa Ana — Hermandad de la Santa Cruz de la Calle Santa Ana y Nuestra Señora del Mar Bollullos Par Del Condado', '1EC7Gym_QB6A74lM4w9t5AJQKQOUDARbl')
+        ]
+      },
+      {
+        label: 'Trabajos a Mano',
+        subgroups: [
+          {
+            label: 'Elaboración de Busto de Cristo tamaño natural',
+            items: imgsNoCaption('Busto de Cristo tamaño natural', [
+              '1G41RD17MxpYT2Lj0dgEaNLrbhxmHSwlX',
+              '1U8ImQimXCN_tVeEp2DyY62eYM1T8wWl9',
+              '1E5NLD6y72RNTsF3nth9OOlhdVFn79K08',
+              '1zy7KS6yzO3Y6RU-6RJzLb-Pb5IxgqKvh',
+              '14NLD-6GlLV_9pyFmVwM1nl2fDlFaWi7U',
+              '1x8cmAOGWvz73HKLVEPM2Weu8QLeW9ekE',
+              '1fs-ty4Qt4oBPrMyyTVv5dXayMIg6-dUG'
+            ])
+          },
+          {
+            label: '"Gárgolas del Matadero" — Elaboración de una gárgola para la Escuela de Arte León Ortega, Huelva',
+            items: imgsNoCaption('Gárgolas del Matadero', [
+              '1SGMGLHuQ7kpg-pX-dg8R2C3IU5FnFYqc',
+              '1mvRxJr4xlLrKAZKGtiB8Qjsrvfv6EVUH',
+              '1CbZ_Jm9BcilW2uMi31n5sMIhlM6FrjdQ',
+              '1uMEGWODSR1YU3KGVgaXKtiTyh7cNoCd2',
+              '1fCRfcd-IsBLHZ3tP8ljbviwe2NwQ0O03',
+              '1h0bICZnmQce1gNLkXJL9P_wUzliFqBRb',
+              '1E2lBVP4ypPJqsxb-9SmD_3VO3ZNV29Yo'
+            ])
+          },
+          {
+            label: 'Relieve realizado en barro',
+            items: imgsNoCaption('Relieve realizado en barro', [
+              '1qXtaRyXUGSQeD_dVuPZVk0z2zNMXWbfe',
+              '1n62Uhl15jBjyb3N6FalBbZzCmLPUvGIG',
+              '1lZYMhey1A-quGxpG1916nI_IacMsXvrO',
+              '1qkjP_sMcIrRUPpybWM9sh6NGM2aD_lmO'
+            ])
+          },
+          {
+            label: 'Trabajos en madera',
+            subgroups: [
+              {
+                label: 'Reproducción de mi rostro en madera de pino',
+                items: imgsNoCaption('Reproducción de rostro en madera de pino', [
+                  '1YiI-eY5nHWIAnK_-YLGKRzobpzO2yygS',
+                  '1B9OjfQbbBgk3kK4QJX46Z6m5fav2yleC',
+                  '1gp-jtdM7VO6Pq3tI_TTYV0gEtrB1YjKN',
+                  '1P0i6Kse5wrExIr9YCnmE5GIC3BPBXY1r'
+                ])
+              },
+              {
+                label: 'Relieve',
+                items: imgsNoCaption('Relieve en madera', [
+                  '127_9tH5iQE3ivuobS5Jh2CJqaPzQuHCQ',
+                  '1CuXejJc4eTfFBt3915MXZZMOiaWwrabw',
+                  '1nJ1h9eu9GJ2o86_rDp0IrpHq8Zvppraj',
+                  '1brOiVnKUB_ULv3EXgeWQXj1a1G90kcnr'
+                ])
+              }
+            ]
+          },
+          {
+            label: 'Otros trabajos realizados',
+            items: imgsNoCaption('Calabaza realizada en barro para Halloween', [
+              '121DWkhsCJb86oIt1FVpGGkcOmFNsXRTT'
+            ])
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'hermandad',
+    title: 'Hermandad del Santo Entierro Bollullos Par Del Condado',
+    desc: 'Trabajos realizados para la Hermandad del Santo Entierro de Bollullos Par Del Condado, principalmente cartelería y redacción de boletines.',
+    years: [
+      {
+        year: '2026',
+        items: [
+          img('Cartel Concierto de Cuaresma 2026', '1owOSbA43V_Gq_EqloqZdIEpaQ-SZu3R8'),
+          img('Cartel Exaltación Siete Palabras 2026', '15g0mflljBWwQx4m45jg4Hns8D2oKt9fi'),
+          img('Cartel Viernes de Dolores 2026', '1LgwoPQDVhi4hnahjVS1v-PHs1uBTOJtd'),
+          img('Cartel Cata Maridaje 2026', '1EhzjRkphvSkJizxM_gprt35cAogwtGQt'),
+          img('Cartel Fiestas de Mayo 2026', '136iPdC0w8lnsoggnSorScb4YSB6redB6'),
+          img('Cartel Formación Bíblica 2026', '15n300ig5F0F6kisT8Lh1CulD60lVmGOh'),
+          bol('Boletín Soledad 2026', 'https://online.fliphtml5.com/HdadSantoEntierroBollullos/Revista-Santo-Entierro-2026/#p=1')
+        ]
+      },
+      {
+        year: '2025',
+        items: [
+          img('Cartel Santa Misión 2025', '1y3RCk72OpNHz9F721EG7RdoN-Fmp9_Pf'),
+          img('Cartel Festividad Nuestra Señora de los Dolores 2025', '1EVPDwqlbdS-3KsHr7ym-5PwUphIWFn97'),
+          img('Cartel Belén de Playmobil 2025', '1ubRRdcYuFNHTL8H-KEOqzZElAQKb_bX_'),
+          img('Cartel Besamanos 2025', '1IU4GAL4DKtDTZyc5nGTeZJA732wTw6tR'),
+          img('Cartel Fiestas de Mayo 2025', '1dh7jH5GCOWI8SSGYXMOQ06tAxrhcIkpS'),
+          img('Cartel Cata Maridaje 2025', '1lz-GR60mP4gqSOZhSs87DA1hB17y5QXO'),
+          vid('Vídeo Promocional Santa Misión 2025', '1igdyl6CIL88vhTzBMmdLlx14xYKKanwG'),
+          bol('Boletín Soledad 2025', 'https://online.fliphtml5.com/HdadSantoEntierroBollullos/Revista-Santo-Entierro-2025/#p=1')
+        ]
+      },
+      {
+        year: '2024',
+        items: [
+          vid('Vídeo Promocional Santa Misión 2024', '1oKh9qd71_lPFvwVr6FKxcZ_PUzsBzCEK'),
+          img('Cartel Besapiés Extraordinario 2024', '1w51FfJooWAUI5-wl_8VwvUI4tD2ZyGGQ'),
+          img('Cartel Concierto de Música 2024', '1TKs8_M2F0cB2bL9rDg9RHqQuyK2WEg3b'),
+          img('Cartel Exposición Yacente 2024', '17qr1NpB_q8vBPg7Imqm2xbnTAgrxl_jE'),
+          vid('Audiovisual Yacente 75 Aniversario Buena Muerte 2024', '1CwiKbKLidhvYG6VGHa6iyJKM7HWcB-Yu'),
+          img('Cartel Belén de Playmobil 2024', '1exyiVgTMBC7oi9uWLroqwoK0P4Zlv34A'),
+          img('Cartel Gamonitas 2024', '1rjqA5P9ex4aQqdz2mXp7GgRT-sUmDhg-'),
+          img('Cartel Exaltación a la Saeta 2024', '1GM72-TiC3cbOkpJhGVcuSkk71ECxRuZd'),
+          img('Cartel Fiestas de Mayo 2024', '1ukag-7fTqYLKkiYmJlOX0ZeZFtHnARbb'),
+          img('Cartel Cata Maridaje 2024', '1AyNdl-N1YlHtNKoE995Bvj_S0agfqBLo'),
+          bol('Boletín Yacente 2024', 'https://online.fliphtml5.com/HdadSantoEntierroBollullos/gtdt/')
+        ]
+      },
+      {
+        year: '2023',
+        items: [
+          img('Cartel Viernes de Dolores 2023', '1JfVvquHxGGaF6IfciPyFfiH3zKvXXLIr'),
+          img('Cartel Belén de Playmobil 2023', '1JR0uNDPS3H5qv2lH0Xoj_TYsIEzDwTB7'),
+          img('Cartel Gamonitas 2023', '1-N0THLZswIRNBI5LZvHV6-_SdZFEbwrf'),
+          img('Cartel Fiestas de Mayo 2023', '1qm7xJQ2Eudd1LBXXus-jD_WS0gEFO3YU'),
+          img('Cartel Cata Maridaje 2023', '1SdI3b_gSmSO5RXzf38QnS1NmAYvBqy_d'),
+          img('Cartel Ruta de Patrimonio 2023', '1rA561eieOf0bwH6Oge3y1Q0ej5ZlHa9U')
+        ]
+      },
+      {
+        year: '2022',
+        items: [
+          img('Cartel Exaltación a la Saeta 2022', '1-e3I1RGK1w0jdGM0-5m0JvabHtmxrbm1'),
+          img('Cartel Exaltación Siete Palabras 2022', '1B0tYCmxCtfEf507H779xYLMZkPsWLYPK')
+        ]
+      }
+    ]
+  },
+  {
+    id: 'finca',
+    title: 'Finca El Fresnal Siglo XXI',
+    desc: 'Elaboración de publicaciones en redes sociales, diseño de publicidades, gestión de marca y uso de aplicaciones web.',
+    items: [
+      img('Identidad de Marca', '1p40ptC_UzXDQjepbvCs3F1oEX3sDJ6AZ'),
+      img('Logotipo 1', '1zEcYiSewWUb-0cyTrXkU69cEDI6jLpMK'),
+      img('Logotipo 2', '1_xqwyIULVNoCuiwdAolW_YY40YPSFQhF'),
+      lnk('Página web', 'https://www.fincafresnal.com/'),
+      lnk('Facebook', 'https://www.facebook.com/FincaElFresnal'),
+      lnk('Instagram', 'https://www.instagram.com/finca_el_fresnal'),
+      note('Elaboración de un portfolio digital en proceso')
+    ]
+  },
+  {
+    id: 'otros',
+    title: 'Otros',
+    desc: 'Trabajos realizados de manera puntual para ayuntamientos u otras entidades.',
+    groups: [
+      {
+        label: 'Hermandad de la Santa Cruz de la Calle Santa Ana y Nuestra Señora del Mar',
+        items: [
+          img('Cartel Besamadero', '1jwsR73Tr8ZYA1uizb5s1E5ZdcCdUIRgQ'),
+          img('Cartel Acompañamiento Musical', '1aGPUKMDXiK441vrHVi2Io9tHdU5UKnE6'),
+          img('Cartel Verbena', '1ghQ4R8hN1m1N1TW39Eht4AwI-HSKTOBN')
+        ]
+      },
+      {
+        label: 'Hermandades y otras entidades',
+        subgroups: [
+          {
+            label: 'Hermandad de Vera Cruz Bollullos Par Del Condado',
+            items: [
+              img('Cartel Sones de Pasión', '1CaQiDpLHB1EVPMxjw0I71Rwmk45lAuf1'),
+              img('Cartel 8ª Barrilada', '1iboYseYFefAavshb1nEU96ewHWmVxLU8')
+            ]
+          }
+        ]
+      },
+      {
+        label: 'Ayuntamientos',
+        subgroups: [
+          {
+            label: 'Ayuntamiento de Villarrasa',
+            items: [
+              vid('Vídeo Homenaje a D. Antonio Ríos Ramos', '1di_Ygd6OyU080_C3igmmfhjv9oNPQKBc')
+            ]
+          },
+          {
+            label: 'Ayuntamiento de Bollullos Par Del Condado',
+            items: [
+              img('Cartel para Makarines Festival de la Juventud', '1rMDgXIC5gawPkNCthPmsUSRsRsWv8Ak5'),
+              img('Implementación de Empresas Colaboradoras', '1RC0vh5fhgRJ5KU1rMMIi5UWVnj0pXA4n')
+            ]
+          }
+        ]
+      }
+    ]
+  }
+];
+
+const workCategories = document.getElementById('workCategories');
+const workGallery = document.getElementById('workGallery');
+const galleryTitle = document.getElementById('galleryTitle');
+const galleryDesc = document.getElementById('galleryDesc');
+const galleryGrid = document.getElementById('galleryGrid');
+
+trabajosData.forEach((cat) => {
+  const card = document.createElement('div');
+  card.className = 'cat-card framed';
+  card.onclick = () => openCategory(cat.id);
+  card.innerHTML = `
+    <span class="c-tr"></span><span class="c-bl"></span>
+    <h3>${cat.title}</h3>
+    <p>${cat.desc}</p>
+  `;
+  workCategories.appendChild(card);
+});
+
+/* construye una celda de galería para un item (imagen, vídeo o boletín) */
+function buildGalleryCell(item){
+  const cell = document.createElement('div');
+
+  if(item.type === 'image'){
+    cell.className = 'gallery-item';
+    const captionHtml = item.caption === false ? '' : `<div class="gallery-caption">${item.title}</div>`;
+    cell.innerHTML = `
+      <img src="${driveThumb(item.id, 900)}" alt="${item.title || ''}" loading="lazy">
+      ${captionHtml}
+    `;
+    cell.onclick = () => openLightboxAt(lightboxItems.indexOf(item));
+
+  } else if(item.type === 'video'){
+    cell.className = 'gallery-item';
+    cell.innerHTML = `
+      <img src="${driveThumb(item.id, 900)}" alt="${item.title}" loading="lazy">
+      <div class="gallery-play">▶</div>
+      <div class="gallery-caption">${item.title}</div>
+    `;
+    cell.onclick = () => openLightboxAt(lightboxItems.indexOf(item));
+
+  } else if(item.type === 'boletin'){
+    cell.className = 'gallery-item gallery-boletin';
+    cell.innerHTML = `
+      <div class="gallery-placeholder">
+        <div class="roll-placeholder-icon">📖</div>
+        <div class="roll-placeholder-text">Ver boletín ↗</div>
+      </div>
+      <div class="gallery-caption">${item.title}</div>
+    `;
+    cell.onclick = () => window.open(item.url, '_blank', 'noopener');
+
+  } else if(item.type === 'link'){
+    cell.className = 'gallery-item gallery-boletin';
+    cell.innerHTML = `
+      <div class="gallery-placeholder">
+        <div class="roll-placeholder-icon">🔗</div>
+        <div class="roll-placeholder-text">Ver más ↗</div>
+      </div>
+      <div class="gallery-caption">${item.title}</div>
+    `;
+    cell.onclick = () => window.open(item.url, '_blank', 'noopener');
+
+  } else if(item.type === 'note'){
+    cell.className = 'gallery-item gallery-note';
+    cell.innerHTML = `
+      <div class="gallery-placeholder">
+        <div class="roll-placeholder-icon">⏳</div>
+        <div class="roll-placeholder-text">${item.title}</div>
+      </div>
+    `;
+  }
+
+  return cell;
+}
+
+/* renderiza una división dentro de una categoría (y sus sub-divisiones, si las tiene) */
+function renderGalleryGroup(group, container, level){
+  const heading = document.createElement('div');
+  heading.className = level === 1 ? 'gallery-group-title' : 'gallery-year';
+  heading.textContent = group.label;
+  container.appendChild(heading);
+
+  if(group.items && group.items.length){
+    const grid = document.createElement('div');
+    grid.className = 'gallery-grid';
+    group.items.forEach(item => grid.appendChild(buildGalleryCell(item)));
+    container.appendChild(grid);
+  }
+
+  if(group.subgroups && group.subgroups.length){
+    const subWrap = document.createElement('div');
+    subWrap.className = 'gallery-subgroups';
+    group.subgroups.forEach(sg => renderGalleryGroup(sg, subWrap, level + 1));
+    container.appendChild(subWrap);
+  }
+}
+
+/* recopila, en orden, todas las imágenes y vídeos de una categoría (para la navegación del visor) */
+function flattenCategoryMedia(cat){
+  const result = [];
+  function fromItems(items){
+    (items || []).forEach(it => {
+      if(it.type === 'image' || it.type === 'video') result.push(it);
+    });
+  }
+  function fromGroup(group){
+    if(group.items) fromItems(group.items);
+    if(group.subgroups) group.subgroups.forEach(fromGroup);
+  }
+  if(cat.years) cat.years.forEach(y => fromItems(y.items));
+  if(cat.groups) cat.groups.forEach(fromGroup);
+  if(cat.items) fromItems(cat.items);
+  return result;
+}
+
+function openCategory(id){
+  const cat = trabajosData.find(c => c.id === id);
+  if(!cat) return;
+
+  lightboxItems = flattenCategoryMedia(cat);
+  lightboxIndex = -1;
+
+  galleryTitle.textContent = cat.title;
+  galleryDesc.textContent = cat.desc;
+  galleryGrid.innerHTML = '';
+
+  if(cat.years && cat.years.length){
+    /* categorías organizadas por año */
+    cat.years.forEach(yearBlock => {
+      const yearHead = document.createElement('div');
+      yearHead.className = 'gallery-year';
+      yearHead.textContent = yearBlock.year;
+      galleryGrid.appendChild(yearHead);
+
+      const yearGrid = document.createElement('div');
+      yearGrid.className = 'gallery-grid';
+      yearBlock.items.forEach(item => yearGrid.appendChild(buildGalleryCell(item)));
+      galleryGrid.appendChild(yearGrid);
+    });
+
+  } else if(cat.groups && cat.groups.length){
+    /* categorías organizadas en divisiones (y opcionalmente sub-divisiones) */
+    cat.groups.forEach(group => renderGalleryGroup(group, galleryGrid, 1));
+
+  } else if(cat.items && cat.items.length){
+    /* categorías con lista plana de contenido, sin divisiones */
+    const flatGrid = document.createElement('div');
+    flatGrid.className = 'gallery-grid';
+    cat.items.forEach(item => flatGrid.appendChild(buildGalleryCell(item)));
+    galleryGrid.appendChild(flatGrid);
+
+  } else {
+    /* categorías aún sin contenido -> placeholders */
+    const placeholderCount = 4;
+    const flatGrid = document.createElement('div');
+    flatGrid.className = 'gallery-grid';
+    for(let i = 0; i < placeholderCount; i++){
+      const cell = document.createElement('div');
+      cell.className = 'gallery-item';
+      cell.innerHTML = `
+        <div class="gallery-placeholder">
+          <div class="roll-placeholder-icon">◆</div>
+          <div class="roll-placeholder-text">Imagen pendiente</div>
+        </div>
+      `;
+      flatGrid.appendChild(cell);
+    }
+    galleryGrid.appendChild(flatGrid);
+  }
+
+  workCategories.style.display = 'none';
+  document.querySelector('#view-trabajos .section-desc-centered').style.display = 'none';
+  workGallery.classList.add('open');
+  window.scrollTo({top:0, behavior:'auto'});
+}
+
+function closeGallery(){
+  workGallery.classList.remove('open');
+  workCategories.style.display = 'grid';
+  document.querySelector('#view-trabajos .section-desc-centered').style.display = 'block';
+  window.scrollTo({top:0, behavior:'auto'});
+}
+
+/* ============ LIGHTBOX ============ */
+const lightbox = document.getElementById('lightbox');
+const lightboxContent = document.getElementById('lightboxContent');
+const lightboxPrevBtn = document.getElementById('lightboxPrevBtn');
+const lightboxNextBtn = document.getElementById('lightboxNextBtn');
+
+let lightboxItems = [];
+let lightboxIndex = -1;
+
+function renderLightboxItem(item){
+  lightboxContent.innerHTML = '';
+
+  if(item.type === 'image'){
+    const image = document.createElement('img');
+    image.alt = item.title || '';
+    image.src = driveThumb(item.id, 1800);
+    image.onerror = () => {
+      lightboxContent.innerHTML = `
+        <div class="lightbox-fallback">
+          <p>No se ha podido cargar la vista previa de "${item.title || 'esta imagen'}".</p>
+          <a class="btn btn-primary" href="https://drive.google.com/file/d/${item.id}/view" target="_blank" rel="noopener">Abrir en Google Drive ↗</a>
+        </div>
+      `;
+    };
+    lightboxContent.appendChild(image);
+
+  } else if(item.type === 'video'){
+    lightboxContent.innerHTML = `<iframe src="${drivePreview(item.id)}" title="${item.title || ''}" allow="autoplay" allowfullscreen></iframe>`;
+  }
+}
+
+function updateLightboxNav(){
+  const hasMultiple = lightboxItems.length > 1;
+  lightboxPrevBtn.classList.toggle('hidden', !hasMultiple);
+  lightboxNextBtn.classList.toggle('hidden', !hasMultiple);
+}
+
+function openLightboxAt(index){
+  if(index < 0 || index >= lightboxItems.length) return;
+  lightboxIndex = index;
+  renderLightboxItem(lightboxItems[lightboxIndex]);
+  updateLightboxNav();
+  lightbox.classList.add('open');
+}
+
+function lightboxNext(){
+  if(!lightboxItems.length) return;
+  openLightboxAt((lightboxIndex + 1) % lightboxItems.length);
+}
+
+function lightboxPrev(){
+  if(!lightboxItems.length) return;
+  openLightboxAt((lightboxIndex - 1 + lightboxItems.length) % lightboxItems.length);
+}
+
+lightboxPrevBtn.addEventListener('click', (e) => { e.stopPropagation(); lightboxPrev(); });
+lightboxNextBtn.addEventListener('click', (e) => { e.stopPropagation(); lightboxNext(); });
+
+document.addEventListener('keydown', (e) => {
+  if(!lightbox.classList.contains('open')) return;
+  if(e.key === 'ArrowRight') lightboxNext();
+  else if(e.key === 'ArrowLeft') lightboxPrev();
+  else if(e.key === 'Escape') closeLightbox();
+});
+
+function closeLightbox(e){
+  lightbox.classList.remove('open');
+  lightboxContent.innerHTML = '';
+}
+
+/* ============ EXPERIENCIA: contenido placeholder ============ */
+const experiencias = [
+  {
+    date: 'Diciembre 2025 — Actualidad',
+    company: 'Finca El Fresnal Siglo XXI',
+    location: 'Higuera de la Sierra, Andalucía, España',
+    items: [
+      'Responsable de la gestión integral de la presencia digital de la empresa, administrando los perfiles oficiales de Facebook e Instagram y desarrollando estrategias de comunicación para potenciar la imagen de la marca y dar visibilidad a sus productos.',
+      'Planificación y publicación de contenidos, el diseño de material gráfico corporativo y promocional, la creación de portfolios digitales de productos y el mantenimiento y gestión de la página web de la empresa. Todo ello orientado a fortalecer la identidad visual de la finca, mejorar su presencia online y acercar sus productos al público de forma atractiva y profesional.'
+    ]
+  },
+  {
+    date: 'Marzo 2024 — Junio 2025',
+    company: 'Grupo Transonuba',
+    location: 'Niebla, Andalucía, España',
+    items: [
+      'Configuración y reparación de equipos informáticos, asegurando el correcto funcionamiento en la operativa diaria.',
+      'Recuperación de datos en más de 20 dispositivos, minimizando pérdidas de información y mejorando la continuidad operativa.',
+      'Aplicación de directivas de seguridad en redes locales, reforzando la protección frente a accesos no autorizados.',
+      'Resolución de incidencias de telefonía móvil y software con un promedio de 10 solicitudes diarias, optimizando la productividad de los usuarios.',
+      'Colaboración con el equipo técnico en el diseño de soluciones prácticas, fomentando el trabajo en equipo y la innovación.'
+    ]
+  },
+  {
+    date: 'Marzo 2023 — Junio 2024',
+    company: 'HBPro, Informática e Telecomunicações Lda',
+    location: 'Amadora, Lisboa, Portugal',
+    items: [
+      'Optimización del rendimiento de más de 30 equipos informáticos, reduciendo significativamente los tiempos de reparación.',
+      'Implementación de directivas básicas de seguridad en servidores locales, mejorando la protección de datos sensibles.',
+      'Instalación y configuración de varios servidores, asegurando la continuidad del servicio.',
+      'Recuperación de datos críticos, garantizando la satisfacción de clientes internos.',
+      'Resolución de una media de 5 incidencias diarias de hardware y software en un entorno internacional.',
+      'Participación en desplazamientos a instalaciones externas, colaborando en la instalación de diferentes equipos y en la implementación de medidas de seguridad informática en empresas clientes.'
+    ]
+  },
+  {
+    date: '2022 — Actualidad',
+    company: 'Hermandad del Santo Entierro',
+    location: 'Bollullos Par del Condado, Andalucía, España',
+    items: [
+      'Responsable de la gestión integral de la comunicación e imagen digital de la Hermandad, administrando los perfiles oficiales de Facebook e Instagram y desarrollando estrategias de difusión para cultos, actividades y eventos.',
+      'Como diseñador gráfico, creador de toda la cartelería oficial de la Hermandad, así como de la identidad visual empleada en sus comunicaciones: diseño de carteles, dípticos, trípticos, invitaciones, material promocional y recursos gráficos para medios digitales e impresos, garantizando una imagen corporativa coherente y de calidad.',
+      'Maquetación editorial de boletines, libros, programas y publicaciones mediante Adobe InDesign, preparando los documentos para su impresión y distribución.',
+      'Producción y edición de contenido audiovisual, planificación y publicación de contenidos en redes sociales y desarrollo de proyectos de imagen corporativa, como la creación de la orla de cultos de Nuestra Señora de las Alegrías (Ilustración Digital).'
+    ]
+  }
+];
+const timelineList = document.getElementById('timelineList');
+experiencias.forEach((e, idx) => {
+  const isLeft = idx % 2 === 0;
+  const row = document.createElement('div');
+  row.className = 'tl-row';
+
+  const card = document.createElement('div');
+  card.className = 'tl-card';
+  card.innerHTML = `
+    <span class="tl-date">${e.date}</span>
+    <h3>${e.company}</h3>
+    <div class="tl-role">${e.location}</div>
+    <ul>${e.items.map(i => `<li>${i}</li>`).join('')}</ul>
+  `;
+
+  const spacer = document.createElement('div');
+  spacer.className = 'tl-spacer';
+
+  if(isLeft){
+    row.appendChild(card);
+    row.appendChild(spacer);
+  } else {
+    row.appendChild(spacer);
+    row.appendChild(card);
+  }
+  timelineList.appendChild(row);
+});
+
+const certificaciones = [
+  {name:'Adobe Certified Professional: Visual Design using Adobe Photoshop', org:'Adobe', year:'2024', url:'https://drive.google.com/file/d/19mAdBaKTp_W5ZChbPMntTi5mLjzEqp3I/view?usp=sharing'},
+  {name:'Adobe Certified Professional: Digital Video using Adobe Premiere Pro', org:'Adobe', year:'2024', url:'https://drive.google.com/file/d/10jQcoicrDpBvsmbsq5Oi0jp-ocWbl8NA/view?usp=drive_link'},
+  {name:'Hacking web', org:'OpenWebinars', year:'2024', url:'https://drive.google.com/file/d/1bguXtn03KwbHfsD530T_T8argLqwvoeF/view?usp=drive_link'},
+  {name:'Introducción a la Monitorización de Seguridad', org:'OpenWebinars', year:'2024', url:'https://drive.google.com/file/d/19fZbEx6QVyLLY87T7vbYTCemenPDkuiz/view?usp=drive_link'},
+  {name:'Diseño de producto orientado al cliente', org:'OpenWebinars', year:'2024', url:'https://drive.google.com/file/d/12NdtnUGSc0vUXqqYTgmY1KYxMXa3mPCf/view?usp=drive_link'},
+  {name:'SSH: imprescindible en tiempos modernos', org:'OpenWebinars', year:'2024', url:'https://drive.google.com/file/d/1axDldpJXSPwSmtl7dAjjq8w8N84q_dJh/view?usp=drive_link'}
+];
+const certGrid = document.getElementById('certGrid');
+certificaciones.forEach(c => {
+  const item = document.createElement('a');
+  item.className = 'cert-square framed';
+  item.href = c.url;
+  item.target = '_blank';
+  item.rel = 'noopener';
+  item.innerHTML = `
+    <span class="c-tr"></span><span class="c-bl"></span>
+    <div class="cert-icon">🎓</div>
+    <div class="cert-text">
+      <h4>${c.name}</h4>
+      <span class="cert-org">${c.org}</span>
+      <span class="cert-year">${c.year}</span>
+      <span class="cert-link">Ver certificado ↗</span>
+    </div>
+  `;
+  certGrid.appendChild(item);
+});
+
+/* ============ CONTACTO ============ */
+async function sendMail(){
+  const nameEl = document.getElementById('cf-name');
+  const emailEl = document.getElementById('cf-email');
+  const phoneEl = document.getElementById('cf-phone');
+  const msgEl = document.getElementById('cf-msg');
+  const statusEl = document.getElementById('cf-status');
+  const submitBtn = document.getElementById('cf-submit');
+
+  const name = nameEl.value.trim();
+  const email = emailEl.value.trim();
+  const phone = phoneEl.value.trim();
+  const msg = msgEl.value.trim();
+
+  if(!name || !email || !msg){
+    statusEl.textContent = 'Por favor, completa al menos tu nombre, email y mensaje.';
+    statusEl.className = 'cf-status error';
+    return;
+  }
+
+  statusEl.textContent = 'Enviando mensaje...';
+  statusEl.className = 'cf-status sending';
+  submitBtn.style.pointerEvents = 'none';
+  submitBtn.style.opacity = '0.6';
+
+  try {
+    const response = await fetch('https://formsubmit.co/ajax/albertodiazalmenta@gmail.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        'Nombre y apellidos': name,
+        'Email': email,
+        'Teléfono': phone || 'No indicado',
+        'Mensaje': msg,
+        '_subject': 'Nuevo mensaje desde el portfolio — ' + name,
+        '_template': 'table',
+        '_captcha': 'false'
+      })
+    });
+
+    if(!response.ok) throw new Error('Error en el envío');
+
+    statusEl.textContent = '¡Mensaje enviado correctamente! Te responderé lo antes posible.';
+    statusEl.className = 'cf-status success';
+    nameEl.value = '';
+    emailEl.value = '';
+    phoneEl.value = '';
+    msgEl.value = '';
+
+  } catch (err) {
+    statusEl.textContent = 'No se ha podido enviar el mensaje. Inténtalo de nuevo o escribe directamente a albertodiazalmenta@gmail.com.';
+    statusEl.className = 'cf-status error';
+
+  } finally {
+    submitBtn.style.pointerEvents = 'auto';
+    submitBtn.style.opacity = '1';
+  }
+}
+
+/* ============ INIT ============ */
+initRoute();
+</script>
+
+</body>
+</html>
