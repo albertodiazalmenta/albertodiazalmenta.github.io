@@ -845,7 +845,7 @@
         <h2 class="section-title-big">Certificaciones</h2>
         <div class="cert-squares" id="certGrid"></div>
         <div class="cv-download">
-          <a class="cv-link" href="https://drive.google.com/file/d/1MZ94phOMxt17qXymvgwAyXrNS8KG2wbv/view?usp=drive_link" target="_blank" rel="noopener">Descargar CV</a>
+          <a class="cv-link" href="https://drive.google.com/file/d/1WU0RzqgrQb33xP6FNJ12-Z295smqAt9P/view?usp=drive_link" target="_blank" rel="noopener">Descargar CV</a>
         </div>
       </div>
     </div>
@@ -1687,10 +1687,12 @@ const certificaciones = [
   {name:'Hacking web', org:'OpenWebinars', year:'2024', url:'https://drive.google.com/file/d/1bguXtn03KwbHfsD530T_T8argLqwvoeF/view?usp=drive_link'},
   {name:'Introducción a la Monitorización de Seguridad', org:'OpenWebinars', year:'2024', url:'https://drive.google.com/file/d/19fZbEx6QVyLLY87T7vbYTCemenPDkuiz/view?usp=drive_link'},
   {name:'Diseño de producto orientado al cliente', org:'OpenWebinars', year:'2024', url:'https://drive.google.com/file/d/12NdtnUGSc0vUXqqYTgmY1KYxMXa3mPCf/view?usp=drive_link'},
-  {name:'SSH: imprescindible en tiempos modernos', org:'OpenWebinars', year:'2024', url:'https://drive.google.com/file/d/1axDldpJXSPwSmtl7dAjjq8w8N84q_dJh/view?usp=drive_link'}
+  {name:'SSH: imprescindible en tiempos modernos', org:'OpenWebinars', year:'2024', url:'https://drive.google.com/file/d/1axDldpJXSPwSmtl7dAjjq8w8N84q_dJh/view?usp=drive_link'},
+  {name:'Logística básica', org:'Aforcade', year:'2025', url:'https://drive.google.com/file/d/1ftnkfRHU35rUez5LnyKN16dD0urNMEVg/view?usp=drive_link'}
 ];
 const certGrid = document.getElementById('certGrid');
-certificaciones.forEach(c => {
+const totalCerts = certificaciones.length;
+certificaciones.forEach((c, idx) => {
   const item = document.createElement('a');
   item.className = 'cert-square framed';
   item.href = c.url;
@@ -1706,6 +1708,10 @@ certificaciones.forEach(c => {
       <span class="cert-link">Ver certificado ↗</span>
     </div>
   `;
+  // Si el último certificado queda solo en la última fila (fila incompleta de 1 elemento), lo centramos
+  if(idx === totalCerts - 1 && totalCerts % 3 === 1){
+    item.style.gridColumn = '2';
+  }
   certGrid.appendChild(item);
 });
 
