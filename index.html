@@ -716,23 +716,42 @@
     .work-categories{ grid-template-columns: 1fr; }
     .contact-wrap{ grid-template-columns: 1fr; }
     .cert-grid{ grid-template-columns: 1fr; }
-    .cert-squares{ grid-template-columns: 1fr; gap: 16px; }
+    .cert-squares{
+      display:flex;
+      flex-direction:column;
+      gap: 0;
+      margin-top: 40px;
+    }
     .cert-square{
       aspect-ratio: auto;
       flex-direction: row;
+      align-items: center;
       text-align: left;
       justify-content: flex-start;
-      padding: 20px 22px;
-      gap: 18px;
+      padding: 18px 4px;
+      gap: 16px;
+      min-width: 0;
+      background: transparent;
+      border-bottom: 1px solid var(--line);
     }
-    .cert-square .cert-icon{ margin-bottom:0; flex-shrink:0; }
-    .cert-text{ align-items:flex-start; }
+    .cert-square:hover{ transform:none; background: transparent; }
+    .cert-square::before,
+    .cert-square::after,
+    .cert-square .c-tr,
+    .cert-square .c-bl{ display:none; }
+    .cert-square .cert-icon{ margin-bottom:0; flex-shrink:0; width:30px; height:30px; font-size:0.85rem; }
+    .cert-text{ align-items:flex-start; min-width:0; gap:4px; }
+    .cert-square h4{ overflow-wrap: break-word; word-break: break-word; }
+    .exp-block{ margin-bottom: 64px; }
+    .timeline-v2{ margin-top: 40px; }
+    .cv-download{ margin-top: 40px; }
     .gallery-grid{ grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap:14px; }
     .timeline-v2::before{ left: 18px; }
-    .tl-row{ gap:0; margin-bottom: 44px; }
+    .tl-row{ gap:0; margin-bottom: 40px; }
     .tl-row::before{ left: 18px; top: 6px; }
     .tl-row .tl-spacer{ display:none; }
-    .tl-row .tl-card{ flex: 1 1 auto; margin-left: 40px; width: calc(100% - 40px); padding: 20px 20px; }
+    .tl-row .tl-card{ flex: 1 1 auto; margin-left: 40px; width: calc(100% - 40px); padding: 20px 20px; min-width:0; }
+    .tl-card h3, .tl-card ul li{ overflow-wrap: break-word; word-break: break-word; }
     header.site{ padding: 16px 5vw; }
     .brand{ font-size: 0.95rem; }
     .page-arrows{ top: 74px; }
@@ -756,7 +775,7 @@
     .categories, .work-categories{ gap: 18px; }
     .cat-card{ padding: 26px 22px; }
     .section-body{ padding: 5vh 6vw 8vh; }
-    .cert-square{ padding: 16px 16px; gap: 14px; }
+    .cert-square{ padding: 14px 2px; gap: 12px; }
     .cert-square h4{ font-size: 0.88rem; }
     .gallery-grid{ grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
     .gallery-group-title{ font-size: 1.1rem; margin-bottom: 22px; }
@@ -1116,7 +1135,8 @@ const trabajosData = [
           '1E0V57px4dwH8BcjRIkoNHDjEN_VNmYkI',
           '1psXxnfln_oeVhWNk6IP2YXrbclvHGmVu',
           '1-TTvdhYGNGUkENCdF7NEidOxwxKoY19g',
-          '1Z5qUvqbr0frdDFdxXukET2P9W3jY-o2d',
+          '1VH-W-szZheK4rRHp-gPNuH9BrYo8jCfK',
+          '1-wVUTYCbaArrR5BmgS3U6QxCjh2Ley-Y',
           '1yChzMcF3kLb48-5gZfYrzLxZGO4z9ml0',
           '119bKItulNy1HfkrpGdDUMOx-zb7si3p5',
           '10fe7yfP6i7shL-srohA5nt5Raa4jBKgZ',
